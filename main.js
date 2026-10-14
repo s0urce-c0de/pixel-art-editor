@@ -6,7 +6,7 @@ const canvas = document.querySelector("canvas#pixel-canvas");
 
 // fix: later make it so it detects when resize or something happens and changes later.
 
-const canvasBoundingRect = permanentLazyWrapper(param => canvas.getBoundingClientRect()[param])
+const canvasBoundingRect = canvas.getBoundingClientRect(); // permanentLazyWrapper(param => canvas.getBoundingClientRect()[param])
 const canvasComputedStyle = window.getComputedStyle(canvas);
 // canvas.width = 100;
 // canvas.height = 100;
@@ -19,10 +19,17 @@ ctx.fillStyle = "green";
 
 // ctx.fillRect(25, 25, 50, 50);
 
-for (let xy = 0; xy < 400*400; xy++) {
-    if ((xy - !!(Math.floor(xy / 400) % 2)) % 2) ctx.fillRect(xy % 400, Math.floor(xy / 400), 1, 1)
+for (let xy = 0; xy < 100*100; xy++) {
+    if ((xy - !!(Math.floor(xy / 100) % 2)) % 2) ctx.fillRect(xy % 100, Math.floor(xy / 100), 1, 1)
 }
 
+console.log(canvasBoundingRect)
+
+ctx.fillStyle = "blue";
+
 canvas.addEventListener("mousemove", e => {
-    console.log(`X: ${e.clientX-canvasBoundingRect.left} Y: ${e.clientY-canvasBoundingRect.top}`);
+    let mouseX = Math.floor((e.clientX-canvasBoundingRect.left) / (canvasBoundingRect.width / canvas.width)),
+        mouseY = Math.floor((e.clientY-canvasBoundingRect.top) / (canvasBoundingRect.width / canvas.width));
+    ctx.fillRect(mouseX, mouseY, 1, 1);
+    console.log(`X: ${mouseX} Y: ${mouseY}`);
 });
