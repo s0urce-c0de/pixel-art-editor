@@ -1,0 +1,4 @@
+# black hole
+node_modules/**
+dist/**
+!dist/index.html

@@ -1,0 +1,22 @@
+{
+  "name": "pixel-art-editor",
+  "version": "0.0.1",
+  "description": "A pixel art editor",
+  "homepage": "https://github.com/s0urce-c0de/pixel-art-editor#readme",
+  "bugs": {
+    "url": "https://github.com/s0urce-c0de/pixel-art-editor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s0urce-c0de/pixel-art-editor.git"
+  },
+  "license": "CC0-1.0",
+  "author": "s0urce-c0de",
+  "type": "module",
+  "scripts": {
+    "build": "google-closure-compiler --flagfile=closure-flags.txt"
+  },
+  "devDependencies": {
+    "google-closure-compiler": "^20261011.0.0"
+  }
+}
