@@ -44,6 +44,7 @@ for (let xy = 0; xy < canvas.width*canvas.height; xy++) if ((xy - +(!!(Math.floo
 for (const layer of layers) layer.drawOn(ctx);
 
 window.addEventListener("resize", _ => {
+    // todo: better solution
     canvasBoundingRect = canvas.getBoundingClientRect();
 })
 
