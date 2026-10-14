@@ -15,8 +15,8 @@ const canvas = /** @type {HTMLCanvasElement} */ (document.querySelector("canvas#
 const canvasBoundingRect = canvas.getBoundingClientRect();
 /** @type {CSSStyleDeclaration} */
 const canvasComputedStyle = window.getComputedStyle(canvas);
-// canvas.width = 100;
-// canvas.height = 100;
+canvas.width = 8;
+canvas.height = 8;
 
 /**
  * A single canvas layer
@@ -96,20 +96,19 @@ ctx.fillStyle = "green";
 
 // ctx.fillRect(25, 25, 50, 50);
 
-for (let xy = 0; xy < 100*100; xy++) if ((xy - +(!!(Math.floor(xy / 100) % 2))) % 2) ctx.fillRect(xy % 100, Math.floor(xy / 100), 1, 1);
+for (let xy = 0; xy < canvas.width*canvas.height; xy++) if ((xy - +(!!(Math.floor(xy / canvas.width) % 2))) % 2) ctx.fillRect(xy % canvas.width, Math.floor(xy / canvas.width), 1, 1);
 
 canvas.addEventListener("mousemove", e => {
     let mouseX = Math.floor((e.clientX-canvasBoundingRect.left) / (canvasBoundingRect.width / canvas.width)),
-        mouseY = Math.floor((e.clientY-canvasBoundingRect.top) / (canvasBoundingRect.width / canvas.width));
+        mouseY = Math.floor((e.clientY-canvasBoundingRect.top) / (canvasBoundingRect.height / canvas.height));
     // ctx.fillRect(mouseX, mouseY, 1, 1);
     cursorLayer.clear();
 
-    cursorLayer.draw(new Rectangle(mouseX-1, mouseY-1, 3, 3, "rgba(128, 128, 128, 0.9)"));
+    cursorLayer.draw(new Rectangle(mouseX, mouseY, 1, 1, "rgba(128, 128, 128, 0.9)"));
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (let xy = 0; xy < 100*100; xy++) if ((xy - +(!!(Math.floor(xy / 100) % 2))) % 2) ctx.fillRect(xy % 100, Math.floor(xy / 100), 1, 1);
-
+    for (let xy = 0; xy < canvas.width*canvas.height; xy++) if ((xy - +(!!(Math.floor(xy / canvas.width) % 2))) % 2) ctx.fillRect(xy % canvas.width, Math.floor(xy / canvas.width), 1, 1);
 
     for (const layer of layers) {
         layer.drawOn(ctx);
