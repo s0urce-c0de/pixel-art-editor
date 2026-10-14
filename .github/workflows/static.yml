@@ -39,7 +39,7 @@ jobs:
       - name: Install Deps
         run: npm ci
       - name: Run Closure
-        run: npm build
+        run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
