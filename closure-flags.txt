@@ -1,10 +1,19 @@
 --js=src/**.js
---js_output_file=dist/main.min.js
+--js_output_file=dist/main.js
+
 --compilation_level=ADVANCED_OPTIMIZATIONS
+
 --warning_level=VERBOSE
+
 --env=BROWSER
+
 --language_in=ECMASCRIPT_NEXT
 --language_out=ECMASCRIPT_2020
---create_source_map=dist/main.min.js.map
+
 --jscomp_error=checkTypes --jscomp_error=strictCheckTypes
 --jscomp_warning=reportUnknownTypes
+
+--create_source_map=dist/main.js.map
+--source_map_format=V3
+--output_wrapper "%output%
+//# sourceMappingURL=main.js.map"
