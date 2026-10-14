@@ -1,5 +1,7 @@
 "use strict";
 
+import Rectangle from "./shapes/shapes.js";
+
 /** @type {HTMLCanvasElement} */
 const canvas = /** @type {HTMLCanvasElement} */ (document.querySelector("canvas#pixel-canvas"));
 
@@ -12,7 +14,20 @@ const canvasComputedStyle = window.getComputedStyle(canvas);
 // canvas.width = 100;
 // canvas.height = 100;
 
+/**
+ * A single canvas layer
+ */
 class Layer {
+    /**
+     * @type {OffscreenCanvas} The internal canvas
+     * @private
+     */
+    _canvas;
+    /**
+     * @type {OffscreenCanvasRenderingContext2D} A 2D context of the internal canvas
+     * @private
+     */
+    _ctx;
 
     /**
      * Constructs the canvas
@@ -21,23 +36,18 @@ class Layer {
      * @returns {void}
      */
     constructor(canvas) {
-        /**
-         * @type {OffscreenCanvas} The internal canvas
-         * @private
-         */
         this._canvas = new OffscreenCanvas(canvas.width, canvas.height);
-        console.log(this._canvas);
+        this._ctx = /** @type {OffscreenCanvasRenderingContext2D} */((this._canvas.getContext("2d")));
     }
 
     /**
      * Draw a shape on the offscreen canvas
      * 
      * @param {*} shape 
-     * @param {...*} params 
      * @returns {void}
      */
-    drawShape(shape, ...params) {
-
+    draw(shape) {
+        shape.draw(this._ctx);
     }
 }
 
