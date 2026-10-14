@@ -1,6 +1,10 @@
 "use strict";
 
-import Rectangle from "./shapes/shapes.js";
+import { Shape, Rectangle } from "./shapes/shapes.js";
+import { RenderingContext2D } from "./types.js";
+
+/** @define {boolean} */
+const COMPILED = false;
 
 /** @type {HTMLCanvasElement} */
 const canvas = /** @type {HTMLCanvasElement} */ (document.querySelector("canvas#pixel-canvas"));
@@ -32,8 +36,7 @@ class Layer {
     /**
      * Constructs the canvas
      * 
-     * @param {*} canvas The canvas element to reference for the shape.
-     * @returns {void}
+     * @param {HTMLCanvasElement} canvas The canvas element to reference for the shape.
      */
     constructor(canvas) {
         this._canvas = new OffscreenCanvas(canvas.width, canvas.height);
@@ -43,42 +46,74 @@ class Layer {
     /**
      * Draw a shape on the offscreen canvas
      * 
-     * @param {*} shape 
+     * @param {Shape} shape 
      * @returns {void}
      */
     draw(shape) {
         shape.draw(this._ctx);
     }
+
+    /**
+     * Clear the canvas 
+     * 
+     * @returns {void}
+     */
+    clear() {
+        this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+    }
+
+    /**
+     * Draw this upon another canvas
+     * 
+     * @param {RenderingContext2D} ctx 
+     * @returns {void}
+     */
+    drawOn(ctx) {
+        ctx.drawImage(this._canvas, 0, 0);
+    }
 }
 
-/** @type {Array<Layer>} */
+/** @type {!Array<!Layer>} */
 const layers = [];
 
 /** @type {CanvasRenderingContext2D} */
 const ctx = /** @type {CanvasRenderingContext2D} */(canvas.getContext("2d"));
 
-window.canvas = canvas;
-window.ctx = ctx;
-window.canvasBoundingRect = canvasBoundingRect;
-window.canvasComputedStyle = canvasComputedStyle;
-window.layers = layers;
-window.Layer = Layer;
+const cursorLayer = new Layer(canvas);
+layers.push(cursorLayer);
+
+// this gets removed for builds and what not.
+// /* closure and vscode linters make me do this */ // @ts-ignore
+// window["canvas"] = canvas; // @ts-ignore
+// window["ctx"] = ctx; // @ts-ignore
+// window["canvasBoundingRect"] = canvasBoundingRect; // @ts-ignore
+// window["canvasComputedStyle"] = canvasComputedStyle; // @ts-ignore
+// window["layers"] = layers; // @ts-ignore
+// window["Layer"] = Layer;
+
 
 ctx.fillStyle = "green";
 
 // ctx.fillRect(25, 25, 50, 50);
 
-for (let xy = 0; xy < 100*100; xy++) {
-    if ((xy - !!(Math.floor(xy / 100) % 2)) % 2) ctx.fillRect(xy % 100, Math.floor(xy / 100), 1, 1)
-}
-
-console.log(canvasBoundingRect);
-
-ctx.fillStyle = "blue";
+for (let xy = 0; xy < 100*100; xy++) if ((xy - +(!!(Math.floor(xy / 100) % 2))) % 2) ctx.fillRect(xy % 100, Math.floor(xy / 100), 1, 1);
 
 canvas.addEventListener("mousemove", e => {
     let mouseX = Math.floor((e.clientX-canvasBoundingRect.left) / (canvasBoundingRect.width / canvas.width)),
         mouseY = Math.floor((e.clientY-canvasBoundingRect.top) / (canvasBoundingRect.width / canvas.width));
-    ctx.fillRect(mouseX, mouseY, 1, 1);
-    console.log(`X: ${mouseX} Y: ${mouseY}`);
+    // ctx.fillRect(mouseX, mouseY, 1, 1);
+    cursorLayer.clear();
+
+    cursorLayer.draw(new Rectangle(mouseX-1, mouseY-1, 3, 3, "rgba(128, 128, 128, 0.9)"));
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let xy = 0; xy < 100*100; xy++) if ((xy - +(!!(Math.floor(xy / 100) % 2))) % 2) ctx.fillRect(xy % 100, Math.floor(xy / 100), 1, 1);
+
+
+    for (const layer of layers) {
+        layer.drawOn(ctx);
+    }
+
+    // console.log(`X: ${mouseX} Y: ${mouseY}`);
 });
