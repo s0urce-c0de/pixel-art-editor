@@ -6,17 +6,17 @@ import Shape from "./shapes/base.js";
  */
 export default class Layer {
     /**
-     * @type {RenderingContext2D} The reference canvas to draw upon
+     * @type {!RenderingContext2D} The reference canvas to draw upon
      * @private
      */
     _ref_ctx;
     /**
-     * @type {OffscreenCanvas} The internal canvas
+     * @type {!OffscreenCanvas} The internal canvas
      * @private
      */
     _canvas;
     /**
-     * @type {OffscreenCanvasRenderingContext2D} A 2D context of the internal canvas
+     * @type {!OffscreenCanvasRenderingContext2D} A 2D context of the internal canvas
      * @private
      */
     _ctx;
@@ -24,18 +24,18 @@ export default class Layer {
     /**
      * Constructs the canvas
      * 
-     * @param {RenderingContext2D} ctx The context to reference to.
+     * @param {!RenderingContext2D} ctx The context to reference to.
      */
     constructor(ctx) {
         this._ref_ctx = ctx;
         this._canvas = new OffscreenCanvas(ctx.canvas.width, ctx.canvas.height);
-        this._ctx = /** @type {OffscreenCanvasRenderingContext2D} */((this._canvas.getContext("2d")));
+        this._ctx = /** @type {!OffscreenCanvasRenderingContext2D} */((this._canvas.getContext("2d")));
     }
 
     /**
      * Draw a shape on the offscreen canvas
      * 
-     * @param {Shape} shape 
+     * @param {!Shape} shape 
      * @returns {void}
      */
     draw(shape) {

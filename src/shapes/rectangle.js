@@ -10,27 +10,27 @@ import { RenderingContext2D } from "../types.js";
  */
 export default class Rectangle extends Shape {
     /**
-     * @type {number} X value of top-left corner
+     * @type {!number} X value of top-left corner
      * @private
      */
     _x;
     /**
-     * @type {number} Y value of top-left corner
+     * @type {!number} Y value of top-left corner
      * @private
      */
     _y;
     /**
-     * @type {number} Width of shape
+     * @type {!number} Width of shape
      * @private
      */
     _width;
     /**
-     * @type {number} Height of shape
+     * @type {!number} Height of shape
      * @private
      */
     _height;
     /**
-     * @type {string} Fill style
+     * @type {!string} Fill style
      * @private
      */
     _fillStyle;
@@ -38,11 +38,11 @@ export default class Rectangle extends Shape {
     /**
      * Creates instance of Rect
      * 
-     * @param {number} x X value for top-left corner
-     * @param {number} y Y value for top-left corner
-     * @param {number} width Width of rectangle
-     * @param {number} height Height of rectangle
-     * @param {string} [fillStyle="black"] Fill color
+     * @param {!number} x X value for top-left corner
+     * @param {!number} y Y value for top-left corner
+     * @param {!number} width Width of rectangle
+     * @param {!number} height Height of rectangle
+     * @param {!string} [fillStyle="black"] Fill color
      */
     constructor(x, y, width, height, fillStyle = "black") {
         super();
@@ -56,7 +56,7 @@ export default class Rectangle extends Shape {
     /**
      * Draw the shape onto a canvas
      * 
-     * @param {RenderingContext2D} _ctx 
+     * @param {!RenderingContext2D} _ctx 
      * @returns {void}
      */
     draw(_ctx) {

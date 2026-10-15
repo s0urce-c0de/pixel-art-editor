@@ -14,7 +14,7 @@ export default class Shape {
     /**
      * Draw a shape
      * 
-     * @param {RenderingContext2D} _ctx Canvas context to draw on
+     * @param {!RenderingContext2D} _ctx Canvas context to draw on
      * @returns {void}
      */
     draw(_ctx) {
