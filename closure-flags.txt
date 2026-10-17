@@ -15,5 +15,6 @@
 
 --create_source_map=dist/main.js.map
 --source_map_format=V3
+--source_map_include_content=true
 --output_wrapper "%output%
 //# sourceMappingURL=main.js.map"
