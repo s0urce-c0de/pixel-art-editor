@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Provides a basic Shape constructor, mainly used for typing.
+ */
 import { RenderingContext2D } from "../types.js";
 
 /**

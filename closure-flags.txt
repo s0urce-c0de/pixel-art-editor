@@ -1,5 +1,6 @@
 --js=src/**.js
 --js_output_file=dist/main.js
+--externs externs.js 
 
 --compilation_level=ADVANCED_OPTIMIZATIONS
 

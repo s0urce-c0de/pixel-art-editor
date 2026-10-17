@@ -1,4 +1,7 @@
-
+/**
+ * A file with types
+ */
+import { Point } from "./utils.js";
 
 /**
  * @typedef {(!OffscreenCanvasRenderingContext2D | !CanvasRenderingContext2D)} RenderingContext2D
@@ -21,9 +24,9 @@ export let CanvasSize = void 0;
 
 /**
  * @typedef {{
- *  x: !number,
- *  y: !number,
- *  action: !string
+ *  pos: !Point,
+ *  action: !string,
+ *  buttons: !number
  * }} MouseAction
  * A single mouse action for storage in a queue
  */
@@ -32,10 +35,9 @@ export let MouseAction = void 0;
 
 /**
  * @typedef {{
- *  x: !number,
- *  y: !number,
+ *  pos: !Point,
  *  show: !boolean,
- *  down: !boolean,
+ *  currentButtons: !number,
  *  eventlog: !Array<!MouseAction>
  * }} MousePos
  * Type to store information about a mouse
@@ -43,7 +45,12 @@ export let MouseAction = void 0;
 export let MousePos = void 0;
 
 /**
- * @typedef {HTMLCanvasElement | OffscreenCanvas} Canvas
- * Combination of Canvas and OffscreenCanvas
+ * Look at what you made me do closure...
  */
-export let Canvas = void 0;
+export class Canvas extends HTMLCanvasElement {
+    constructor() {
+        super();
+        /** @type {!DOMRect} */
+        this._brect;
+    }
+}

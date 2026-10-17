@@ -4,6 +4,7 @@
 
 import Shape from "./base.js";
 import { RenderingContext2D } from "../types.js";
+import { Point } from "../utils.js";
 
 /**
  * Rectangle
@@ -38,16 +39,15 @@ export default class Rectangle extends Shape {
     /**
      * Creates instance of Rect
      * 
-     * @param {!number} x X value for top-left corner
-     * @param {!number} y Y value for top-left corner
+     * @param {!Point} point The point representing the top-left corner
      * @param {!number} width Width of rectangle
      * @param {!number} height Height of rectangle
      * @param {!string} [fillStyle="black"] Fill color
      */
-    constructor(x, y, width, height, fillStyle = "black") {
+    constructor(point, width, height, fillStyle = "black") {
         super();
-        this._x = x;
-        this._y = y;
+        this._x = point.x;
+        this._y = point.y;
         this._width = width;
         this._height = height;
         this._fillStyle = fillStyle;

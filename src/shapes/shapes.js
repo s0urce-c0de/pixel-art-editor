@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Congregates all the shapes.
+ */
 import Rectangle from "./rectangle.js";
 import Shape from "./base.js";
 

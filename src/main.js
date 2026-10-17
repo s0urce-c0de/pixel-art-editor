@@ -1,15 +1,14 @@
 "use strict";
 
-import { MousePos, CanvasSize } from "./types.js";
+import { MousePos, Canvas } from "./types.js";
 import { Rectangle } from "./shapes/shapes.js";
 import Layer from "./layer.js";
-import { boundingRectToCanvasSize, Point, scaleCoordinates } from "./utils.js";
+import { Point } from "./utils.js";
 
-// /** @type {Object<string, boolean | number>} */
-// const state = {};
 
-/** @type {!HTMLCanvasElement} */
-const canvas = /** @type {!HTMLCanvasElement} */ (document.querySelector("canvas#pixel-canvas"));
+/** @type {!Canvas} */
+const canvas = /** @type {!Canvas} */ (document.querySelector("canvas#pixel-canvas"));
+canvas._brect = canvas.getBoundingClientRect();
 
 canvas.width = 8;
 canvas.height = 8;
@@ -18,18 +17,12 @@ canvas.height = 8;
  * @type {!MousePos} mouse position
  */
 const mouse = {
-    x: -1,
-    y: -1,
+    pos: new Point(-1, -1),
     show: true,
-    down: false,
+    // see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons#value
+    currentButtons: 0b000,
     eventlog: []
 }
-
-/** @type {!CanvasSize} */
-let canvasSize = boundingRectToCanvasSize(canvas.getBoundingClientRect());
-
-// /** @type {CSSStyleDeclaration} */
-// const canvasComputedStyle = window.getComputedStyle(canvas);
 
 /** @type {!Array<!Layer>} */
 const layers = [];
@@ -48,62 +41,69 @@ layers.unshift(BGLayer);
 
 ctx.fillStyle = "green";
 
-for (let xy = 0; xy < canvas.width*canvas.height; xy++) if ((xy - +(!!(Math.floor(xy / canvas.width) % 2))) % 2) BGLayer.draw(new Rectangle(xy % canvas.width, Math.floor(xy / canvas.width), 1, 1, "green"));
+for (let xy = 0; xy < canvas.width*canvas.height; xy++) if ((Math.floor(xy / canvas.width) + xy) % 2) BGLayer.draw(new Rectangle(new Point(xy % canvas.width, Math.floor(xy / canvas.width)), 1, 1, "green"));
 
 for (const layer of layers) layer.drawOn(ctx);
 
-window.addEventListener("resize", _ => boundingRectToCanvasSize(canvas.getBoundingClientRect(), canvasSize));
+window.addEventListener("resize", _ => canvas._brect = canvas.getBoundingClientRect());
 
 // here mousemove should be called automatically
 canvas.addEventListener("mouseenter", _ => mouse.show = true);
 
 canvas.addEventListener("mousemove", function canvasOnMouseMove(e){
-    [mouse.x, mouse.y] = scaleCoordinates(new Point(e.clientX, e.clientY), canvas, canvasSize);
+    mouse.pos = new Point(e.clientX, e.clientY).scale(canvas);
 });
 
 canvas.addEventListener("mouseleave", _ => {
     mouse.show = false;
-    mouse.x = mouse.y = -1;
+    mouse.pos = new Point(-1, -1);
 });
 
 // so to explain why i dont manipulate it manually is so that i can push states
 // like if you moved the mouse a lot in one second
 
-canvas.addEventListener("mousedown", e => {
+/**
+ * Handle a mouse event
+ * 
+ * @param {!string} action The action that gets pushed into the eventlog
+ * @param {!MouseEvent} e Mouse event
+ */
+function mouseHandler(action, e) {
     mouse.eventlog.push({
-        .../** @type {{x: number, y: number}} */(scaleCoordinates(new Point(e.clientX, e.clientY), canvas, canvasSize)),
-        action: "down"
+        pos: new Point(e.clientX, e.clientY).scale(canvas),
+        action,
+        buttons: e.buttons
     });
-});
+}
 
-canvas.addEventListener("mousemove", e =>
-    mouse.eventlog.push({
-        x: e.clientX,
-        y: e.clientY,
-        action: "move"
-    })
-);
-
-canvas.addEventListener("mouseup", e =>
-    mouse.eventlog.push({
-        x: e.clientX,
-        y: e.clientY,
-        action: "up"
-    })
-);
+canvas.addEventListener("mousedown", e => mouseHandler("down", /** @type {!MouseEvent} */(e)));
+canvas.addEventListener("mousemove", e => mouseHandler("move", /** @type {!MouseEvent} */(e)));
+canvas.addEventListener("mouseup", e => mouseHandler("up", /** @type {!MouseEvent} */(e)));
 
 requestAnimationFrame(function tick() {
     cursorLayer.clear();
 
     for (let mouseEvent of mouse.eventlog) {
-        switch (mouseEvent.action) {
-            case "down":
-                mouse.down = true;
-                drawLayer.draw(new Rectangle(mouseEvent.x, mouseEvent.y, 1, 1));
-        }
+        // switch (mouseEvent.action) {
+        //     case "down":
+        //         mouse.down = true;
+        //         break;
+        //     case "move":
+        //         break;
+        //     case "up":
+        //         mouse.down = false;
+        //         break;
+        //     default:
+        //         break;
+        // }
+        mouse.currentButtons = mouseEvent.buttons;
+        mouse.pos = mouseEvent.pos;
+        if(mouseEvent.buttons & 1) drawLayer.draw(new Rectangle(mouse.pos, 1, 1, "rgb(240, 9, 9)"));
     }
 
-    if(mouse.show) cursorLayer.draw(new Rectangle(mouse.x, mouse.y, 1, 1, "rgba(128, 128, 128, 0.9)"));
+    mouse.eventlog = [];
+
+    if(mouse.show) cursorLayer.draw(new Rectangle(mouse.pos, 1, 1, "rgba(128, 128, 128, 0.9)"));
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 

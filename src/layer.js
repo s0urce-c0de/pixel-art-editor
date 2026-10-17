@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Implements layers
+ */
 import { RenderingContext2D } from "./types.js";
 import Shape from "./shapes/base.js";
 
