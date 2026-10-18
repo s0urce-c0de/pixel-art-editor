@@ -3,8 +3,7 @@
 import { MousePos, Canvas } from "./types.js";
 import { Rectangle } from "./shapes/shapes.js";
 import Layer from "./layer.js";
-import { Point } from "./utils.js";
-
+import { copyImage, packLayers, Point, saveImage } from "./utils.js";
 
 /** @type {!Canvas} */
 const canvas = /** @type {!Canvas} */ (document.querySelector("canvas#pixel-canvas"));
@@ -41,7 +40,7 @@ layers.unshift(BGLayer);
 
 ctx.fillStyle = "green";
 
-for (let xy = 0; xy < canvas.width*canvas.height; xy++) if ((Math.floor(xy / canvas.width) + xy) % 2) BGLayer.draw(new Rectangle(new Point(xy % canvas.width, Math.floor(xy / canvas.width)), 1, 1, "green"));
+// for (let xy = 0; xy < canvas.width*canvas.height; xy++) if ((Math.floor(xy / canvas.width) + xy) % 2) BGLayer.draw(new Rectangle(new Point(xy % canvas.width, Math.floor(xy / canvas.width)), 1, 1, "green"));
 
 for (const layer of layers) layer.drawOn(ctx);
 
@@ -80,6 +79,24 @@ canvas.addEventListener("mousedown", e => mouseHandler("down", /** @type {!Mouse
 canvas.addEventListener("mousemove", e => mouseHandler("move", /** @type {!MouseEvent} */(e)));
 canvas.addEventListener("mouseup", e => mouseHandler("up", /** @type {!MouseEvent} */(e)));
 
+window.addEventListener("keydown", e => {   
+    const isMac = navigator.userAgent.toLowerCase().includes("mac");
+    const ctrlKey = isMac ? e.metaKey : e.ctrlKey;
+
+    if (ctrlKey) {
+        switch (/** @type {KeyboardEvent} */(e).key) {
+            case "s":
+                e.preventDefault();
+                saveImage([layers[1]], canvas.width, canvas.height);
+                break;
+            case "c":
+                e.preventDefault();
+                copyImage([layers[1]], canvas.width, canvas.height);
+                break;
+        }
+    }
+});
+
 requestAnimationFrame(function tick() {
     cursorLayer.clear();
 
@@ -103,13 +120,11 @@ requestAnimationFrame(function tick() {
 
     mouse.eventlog = [];
 
-    if(mouse.show) cursorLayer.draw(new Rectangle(mouse.pos, 1, 1, "rgba(128, 128, 128, 0.9)"));
+    if(mouse.show) cursorLayer.draw(new Rectangle(mouse.pos, 1, 1, "rgba(128, 128, 128, 0.5)"));
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (const layer of layers) {
-        layer.drawOn(ctx);
-    }
+    packLayers(layers, ctx);
 
     requestAnimationFrame(tick);
-})
+});
