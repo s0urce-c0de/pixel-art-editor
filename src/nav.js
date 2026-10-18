@@ -1,3 +1,5 @@
+import submenu from "./submenus/submenu.js";
+
 /**
  * Basically initializes the navigation elements
  * 
