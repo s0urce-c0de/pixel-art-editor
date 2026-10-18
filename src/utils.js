@@ -122,3 +122,28 @@ export function copyImage(layers, width, height) {
 
     return out.convertToBlob().then(blob => navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]));
 }
+
+/**
+ * information about the device
+ */
+class DeviceInfo {
+    /**
+     * Gets if the device is a macbook.
+     * 
+     * @returns {!boolean}
+     * @export
+     */
+    get isMac() {
+        Object.defineProperty(this, "isMac", {
+            value: navigator.userAgent.toLowerCase().includes("mac"),
+            writable: false,
+            configurable: true,
+            enumerable: true
+        });
+
+        return this.isMac;
+    }
+}
+
+/** @type {DeviceInfo} */
+export const device = new DeviceInfo;

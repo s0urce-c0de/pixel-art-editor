@@ -14,7 +14,7 @@
   "author": "s0urce-c0de",
   "type": "module",
   "scripts": {
-    "build": "google-closure-compiler --flagfile=closure-flags.txt"
+    "build": "google-closure-compiler --flagfile=closure-flags.txt && cp static/* dist"
   },
   "devDependencies": {
     "google-closure-compiler": "^20261011.0.0"

@@ -3,11 +3,15 @@
 import { MousePos, Canvas } from "./types.js";
 import { Rectangle } from "./shapes/shapes.js";
 import Layer from "./layer.js";
-import { copyImage, packLayers, Point, saveImage } from "./utils.js";
+import { copyImage, device, packLayers, Point, saveImage } from "./utils.js";
+import { initNav } from "./nav.js";
 
 /** @type {!Canvas} */
 const canvas = /** @type {!Canvas} */ (document.querySelector("canvas#pixel-canvas"));
 canvas._brect = canvas.getBoundingClientRect();
+
+/** @type {!HTMLUListElement} */
+const nav = /** @type {!HTMLUListElement} */(document.querySelector("ul#nav-list"));
 
 canvas.width = 8;
 canvas.height = 8;
@@ -80,8 +84,7 @@ canvas.addEventListener("mousemove", e => mouseHandler("move", /** @type {!Mouse
 canvas.addEventListener("mouseup", e => mouseHandler("up", /** @type {!MouseEvent} */(e)));
 
 window.addEventListener("keydown", e => {   
-    const isMac = navigator.userAgent.toLowerCase().includes("mac");
-    const ctrlKey = isMac ? e.metaKey : e.ctrlKey;
+    const ctrlKey = device.isMac ? e.metaKey : e.ctrlKey;
 
     if (ctrlKey) {
         switch (/** @type {KeyboardEvent} */(e).key) {
@@ -96,6 +99,8 @@ window.addEventListener("keydown", e => {
         }
     }
 });
+
+initNav(nav);
 
 requestAnimationFrame(function tick() {
     cursorLayer.clear();

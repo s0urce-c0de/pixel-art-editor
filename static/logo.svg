@@ -1,0 +1,13 @@
+<!-- Hand written from a real drawing as a reference that I made! -->
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 9 9" fill="none">
+<rect width="9" height="9" style="fill:none; stroke-width: 1; stroke:#FFF;" />
+<g transform="translate(0.5, 0.5)">
+<rect x="2" y="1" width="1" height="3" fill="rgb(240, 9, 9)"/>
+<rect x="5" y="1" width="1" height="3" fill="rgb(240, 9, 9)"/>
+<rect x="0" y="5" width="1" height="1" fill="rgb(240, 9, 9)"/>
+<rect x="1" y="6" width="1" height="1" fill="rgb(240, 9, 9)"/>
+<rect x="2" y="7" width="4" height="1" fill="rgb(240, 9, 9)"/>
+<rect x="7" y="5" width="1" height="1" fill="rgb(240, 9, 9)"/>
+<rect x="6" y="6" width="1" height="1" fill="rgb(240, 9, 9)"/>
+</g>
+</svg>
