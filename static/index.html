@@ -46,18 +46,22 @@
                 gap: 0.5em;
                 list-style-type: none;
                 margin: 0;
-                padding: 0 1%;
+                padding: 0;
 
                 img, li {
                     padding: 0.25em 0.75em;
                     border-radius: 0.5em;
                 }
 
+                li {
+                    cursor: pointer;
+                }
+
                 li:hover {
                     background-color: #00000020;
                 }
 
-                li:active {
+                li:active, li.active {
                     background-color: #00000030;
                 }
             }
