@@ -1,5 +1,10 @@
-you dont have to read this
+# Pixel art editor
 
-basic pixel art editor because yeah 👍
+This is a simple pixel art editor.
 
-Also im aware I type cast to many things as non nullable, I care less. Idgaf about the edge case, if it is a genuine case make an issue. If it is "oh im running 16k [insert game which uses too much vram] in the background and this crashes out of memory", then i don't care.
+The project isn't fully complete yet but the shortcuts are (replace ctrl with cmd on mac os):
+
+CTRL + S: save the image
+CTRL + C: copy the image to the clipboard
+
+At the moment it is fixed 8x8 grid and red. I will update after nav buttons.
