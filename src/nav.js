@@ -1,6 +1,7 @@
 import config from "./config.js";
-import Submenu, { SubmenuFunctionItem, SubmenuItem, SubmenuItemItem, SubmenuItems } from "./submenus/base.js";
-import { Shortcut } from "./types.js";
+import Submenu, { SubmenuFunctionItem, SubmenuItem, SubmenuItemItem, SubmenuItems } from "./submenu.js";
+import { Modifiers, Shortcut } from "./types.js";
+import { device } from "./utils.js";
 
 /**
  * @const {CSSStyleSheet}
@@ -56,6 +57,7 @@ NavStyleSheet.replaceSync(`:host {
                 padding: 0 0.5em;
                 display: flex;
                 justify-content: space-between;
+                cursor: pointer;
                 &:hover {
                     background-color: #00000020;
                 }
@@ -107,7 +109,7 @@ export default class NavElem extends HTMLElement {
 
     /**
      * @private
-     * @type {!Object<Shortcut, *>}
+     * @type {!Object<string, !HTMLElement>}
      */
     _shortcuts;
 
@@ -118,6 +120,7 @@ export default class NavElem extends HTMLElement {
 
         this._menulist = /** @type {!HTMLUListElement} */(document.createElement("ul"));
         this._submenus = /** @type {!HTMLDivElement} */(document.createElement("div"));
+        this._shortcuts = {};
 
         /** @type {!HTMLImageElement} */
         const logo = config.logo;
@@ -172,13 +175,34 @@ export default class NavElem extends HTMLElement {
 
                         submenu_item_shorcut.textContent = item.shortcut.toString();
 
-                        submenu_item.appendChild(submenu_item_shorcut)
+                        submenu_item.appendChild(submenu_item_shorcut);
+
+                        this._shortcuts[item.shortcut.toString()] = submenu_item;
                     }
                     submenu_item.addEventListener("click", /** @type {function(Event):*} */(item.func));
+                } else {
+                    throw new Error("Something fucked up happened");
                 }
 
                 submenu_el.appendChild(submenu_item);
             }
+
+            window.addEventListener("keydown", /** @type {function(Event):*} */((/** @type {KeyboardEvent} */e) => {
+                if(e.repeat) return;
+                /** @type {number} */
+                let mod = 0;
+                /** @type {string} */
+                let shortcut;
+
+                mod |= +(e.shiftKey && Modifiers.SHIFT);
+                mod |= +((device.isMac ? e.metaKey : e.ctrlKey) && Modifiers.CTRL);
+                mod |= +(e.altKey && Modifiers.ALT);
+
+                if (this._shortcuts.hasOwnProperty(shortcut = (new Shortcut(mod, device.isMac ? String.fromCharCode(e.keyCode) : e.key)).toString())) {
+                    e.preventDefault();
+                    this._shortcuts[shortcut].click();
+                }
+            }));
 
             submenu_el.popover = "manual";
             submenu_el.style.positionAnchor = li.style.anchorName;

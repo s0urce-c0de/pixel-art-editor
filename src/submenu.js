@@ -2,7 +2,7 @@
  * @fileoverview A base file to base submenus from
  */
 
-import { Shortcut } from "../types.js";
+import { Shortcut } from "./types.js";
 
 /** @typedef {{func: !function(!MouseEvent=):?, shortcut: (Shortcut|undefined)}} SubmenuFunctionItem */
 export let SubmenuFunctionItem = void 0;

@@ -59,6 +59,7 @@ export let Modifiers = {
 export class Canvas extends HTMLCanvasElement {
     constructor() {
         super();
+        
         /** @type {!DOMRect} */
         this._brect;
     }

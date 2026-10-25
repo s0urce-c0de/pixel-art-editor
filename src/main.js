@@ -1,11 +1,11 @@
 "use strict";
 
-import { MousePos, Canvas } from "./types.js";
+import { MousePos, Canvas, Shortcut, Modifiers } from "./types.js";
 import { Rectangle } from "./shapes/shapes.js";
 import Layer from "./layer.js";
 import { copyImage, device, packLayers, Point, saveImage } from "./utils.js";
 import NavElem from "./nav.js";
-import submenus from "./submenus/submenu.js";
+import Submenu from "./submenu.js";
 
 /** @type {!Canvas} */
 const canvas = /** @type {!Canvas} */ (document.querySelector("canvas#pixel-canvas"));
@@ -14,8 +14,8 @@ canvas._brect = canvas.getBoundingClientRect();
 /** @type {!NavElem} */
 const nav = /** @type {!NavElem} */(document.querySelector("nav-elem"));
 
-canvas.width = 8;
-canvas.height = 8;
+canvas.width = 32;
+canvas.height = 32;
 
 /**
  * @type {!MousePos} mouse position
@@ -84,24 +84,10 @@ canvas.addEventListener("mousedown", e => mouseHandler("down", /** @type {!Mouse
 canvas.addEventListener("mousemove", e => mouseHandler("move", /** @type {!MouseEvent} */(e)));
 canvas.addEventListener("mouseup", e => mouseHandler("up", /** @type {!MouseEvent} */(e)));
 
-window.addEventListener("keydown", e => {   
-    const ctrlKey = device.isMac ? e.metaKey : e.ctrlKey;
-
-    if (ctrlKey) {
-        switch (/** @type {KeyboardEvent} */(e).key) {
-            case "s":
-                e.preventDefault();
-                saveImage([layers[1]], canvas.width, canvas.height);
-                break;
-            case "c":
-                e.preventDefault();
-                copyImage([layers[1]], canvas.width, canvas.height);
-                break;
-        }
-    }
-});
-
-nav.init(submenus);
+nav.init([new Submenu("File", [
+    {name: "Save Image", item: {func: ()=>saveImage([layers[1]], canvas.width, canvas.height), shortcut: new Shortcut(Modifiers.CTRL, "S")}},
+    {name: "Copy Image", item: {func: ()=>copyImage([layers[1]], canvas.width, canvas.height), shortcut: new Shortcut(Modifiers.CTRL, "C")}}
+])]);
 
 requestAnimationFrame(function tick() {
     cursorLayer.clear();
