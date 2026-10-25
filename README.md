@@ -27,4 +27,6 @@ Example of a wonderful drawing:
 <br>
 ![Grid](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAI0lEQVQYV2P8wMn5X+D7d0ZcNCMDAwMDuiAyjVUQmR4SJgAA/ut4Ddy+U+EAAAAQZGVCR0ZENDc2MDc2RTFDNzA2NUIXXzGYAAAAAElFTkSuQmCC)
 <br>
-If it is blurred, that is because by default it is rendered blurred by brwosers. If it is small, idk what to do.
+![_jeb or something](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAUElEQVR4AXzMQQqAMAwFUc2uO+9/Snddal8goKW0dEj4mSTu1p4dcfV+7ohjPBdG+f3KUnDBVAh9ZSkIIIS+SMHWClIKGptfZEjBYL4gI7wAAAD//zxR/IAAAAAGSURBVAMAZ2BQFY8i1ksAAAAASUVORK5CYII=)
+<br>
+If it is blurred, that is because by default it is rendered blurred by brwosers. If it is small, idk what to do. If it is not showing on GitHub, clone the repo and show it. Idk what to say github doesnt liek data URIs :(.
