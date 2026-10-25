@@ -4,14 +4,15 @@ import { MousePos, Canvas } from "./types.js";
 import { Rectangle } from "./shapes/shapes.js";
 import Layer from "./layer.js";
 import { copyImage, device, packLayers, Point, saveImage } from "./utils.js";
-import { initNav } from "./nav.js";
+import NavElem from "./nav.js";
+import submenus from "./submenus/submenu.js";
 
 /** @type {!Canvas} */
 const canvas = /** @type {!Canvas} */ (document.querySelector("canvas#pixel-canvas"));
 canvas._brect = canvas.getBoundingClientRect();
 
-/** @type {!HTMLUListElement} */
-const nav = /** @type {!HTMLUListElement} */(document.querySelector("ul#nav-list"));
+/** @type {!NavElem} */
+const nav = /** @type {!NavElem} */(document.querySelector("nav-elem"));
 
 canvas.width = 8;
 canvas.height = 8;
@@ -100,7 +101,7 @@ window.addEventListener("keydown", e => {
     }
 });
 
-initNav(nav);
+nav.init(submenus);
 
 requestAnimationFrame(function tick() {
     cursorLayer.clear();

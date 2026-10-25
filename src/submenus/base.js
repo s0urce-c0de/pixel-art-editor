@@ -2,25 +2,35 @@
  * @fileoverview A base file to base submenus from
  */
 
-/**
- * @typedef {[string, SubmenuItems|function]} SubmenuItem
- */
-let SubmenuItem = void 0;
 
 /**
- * @typedef {Array<SubmenuItem>} SubmenuItems
+ * @typedef {{name: string, item: (!SubmenuItems|!function(!MouseEvent=):?)}} SubmenuItem A submenu item
  */
-let SubmenuItems = void 0;
+export let SubmenuItem = void 0;
+
+/**
+ * @typedef {Array<!SubmenuItem>} SubmenuItems Array of submenu item
+ */
+export let SubmenuItems = void 0;
 
 /**
  * Make a submenu
  */
 export default class Submenu {
     /**
-     * 
-     * @param {SubmenuItems} items 
+     * @type {string} Name of the submenu
      */
-    constructor(items) {
-        this._items = items;
+    name;
+    /**
+     * @type {!SubmenuItems} The submenu items.
+     */
+    items;
+    /**
+     * @param {string} name 
+     * @param {!SubmenuItems} items 
+     */
+    constructor(name, items) {
+        this.name = name;
+        this.items = items;
     }
 }
