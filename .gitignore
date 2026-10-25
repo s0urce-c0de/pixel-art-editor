@@ -2,7 +2,7 @@
 node_modules/**
 dist/**
 
-bazel-testlogs/**
-bazel-pixel-art-editor/**
-bazel-out/**
-bazel-bin/**
+bazel-testlogs
+bazel-pixel-art-editor
+bazel-out
+bazel-bin

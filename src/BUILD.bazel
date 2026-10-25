@@ -38,5 +38,35 @@ closure_js_binary(
         "--jscomp_warning=reportUnknownTypes",
         "--jscomp_warning=missingProperties",
         "--jscomp_warning=accessControls",
+        "--create_source_map=$(execpath :out.js.map)",
     ],
+)
+
+genrule(
+    name = "dist",
+    srcs = [
+        "static/index.html",
+        ":out",
+        ":out.js.map"
+    ],
+    outs = [
+        "dist/index.html",
+        "dist/main.js",
+        "dist/main.js.map"
+    ],
+    cmd = """
+        mkdir -p $(RULEDIR)/dist
+        cp $(location static/index.html) $(RULEDIR)/dist/index.html
+        
+        for file in $(locations :out); do
+            if [[ "$$file" == *.map ]]; then
+                cp "$$file" $(RULEDIR)/dist/main.js.map
+            else
+                cp "$$file" $(RULEDIR)/dist/main.js
+            fi
+        done
+
+        chmod +w $(RULEDIR)/dist/main.js
+        echo "//# sourceMappingURL=main.js.map" >> $(RULEDIR)/dist/main.js
+    """,
 )
