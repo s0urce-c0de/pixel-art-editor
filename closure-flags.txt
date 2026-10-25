@@ -1,21 +1,24 @@
 --js=src/**.js
 --js_output_file=dist/main.js
---externs externs.js 
+--externs=externs.js 
 
 --compilation_level=ADVANCED_OPTIMIZATIONS
-
 --warning_level=VERBOSE
 
 --env=BROWSER
-
 --language_in=ECMASCRIPT_NEXT
 --language_out=ECMASCRIPT_2020
 
---jscomp_error=checkTypes --jscomp_error=strictCheckTypes
+--assume_function_wrapper=true 
+
+--jscomp_error=checkTypes
+--jscomp_error=strictCheckTypes
 --jscomp_warning=reportUnknownTypes
+--jscomp_warning=missingProperties
+--jscomp_warning=accessControls
 
 --create_source_map=dist/main.js.map
 --source_map_format=V3
 --source_map_include_content=true
---output_wrapper "%output%
+--output_wrapper "(function(){%output%}).call(this);
 //# sourceMappingURL=main.js.map"

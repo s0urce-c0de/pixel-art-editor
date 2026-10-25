@@ -1,5 +1,6 @@
 import config from "./config.js";
-import Submenu from "./submenus/base.js";
+import Submenu, { SubmenuFunctionItem, SubmenuItem, SubmenuItemItem, SubmenuItems } from "./submenus/base.js";
+import { Shortcut } from "./types.js";
 
 /**
  * @const {CSSStyleSheet}
@@ -9,7 +10,7 @@ const NavStyleSheet = new CSSStyleSheet();
 NavStyleSheet.replaceSync(`:host {
     grid-row: 1;
     width: 100%;
-    background-color: gray;
+    background-color: #FFFFFF60;
     & > ul {
         /* Changed to display flex later */
         display: none;
@@ -48,12 +49,19 @@ NavStyleSheet.replaceSync(`:host {
             /* CSS Fun fact: you need space around the plus for it to work */
             left: calc(anchor(left) + 0.5em);
             top: calc(anchor(bottom) + 0.25em);
-            background-color: #B0B0B080;
+            background-color: #FFFFFF60;
+            min-width: 10%;
 
-            & > * {
+            & > li {
                 padding: 0 0.5em;
+                display: flex;
+                justify-content: space-between;
                 &:hover {
-                    background-color: #B0B0B0F0;
+                    background-color: #00000020;
+                }
+
+                span:nth-child(2) {
+                    color: darkgrey;
                 }
             }
         }
@@ -97,6 +105,12 @@ export default class NavElem extends HTMLElement {
      */
     _submenus;
 
+    /**
+     * @private
+     * @type {!Object<Shortcut, *>}
+     */
+    _shortcuts;
+
     constructor() {
         super();
         this._root = this.attachShadow({ mode: "closed" });
@@ -127,7 +141,7 @@ export default class NavElem extends HTMLElement {
             const submenu = submenus[i];
             /** @type {!HTMLLIElement} */
             let li = /** @type {!HTMLLIElement} */(document.createElement("li"));
-            li.innerText = submenu.name;
+            li.textContent = submenu.name;
             /* Shouldn't repeat since I think it stops are shadow-dom boundary */
             li.id = `submenus-${i}`
             li.style.anchorName = `--${li.id}`;
@@ -139,13 +153,28 @@ export default class NavElem extends HTMLElement {
 
             for (const {name, item} of submenu.items) {
                 /** @const {!HTMLLIElement} */
-                const submenu_item = /** @const {!HTMLLIElement} */(document.createElement("li"));
-                submenu_item.innerText = name;
-                if (item instanceof Function) {
-                    /* TODO: Add code to dismis after the item is clicked. */
-                    submenu_item.addEventListener("click", item);
-                } else {
-                    throw new Error("Should be a string! No nested support yet!");
+                const submenu_item = /** @type {!HTMLLIElement} */(document.createElement("li"));
+
+                if (Array.isArray(item)) {
+                    throw new Error("Should be a string! NO nesting support uet!");
+                } else if (item.func instanceof Function) {
+                    /** @const {!HTMLSpanElement} */
+                    const submenu_item_name = /** @type {!HTMLSpanElement} */(document.createElement("span"));
+                    submenu_item_name.textContent = name;
+
+                    submenu_item.appendChild(submenu_item_name);
+                    
+                    console.log(item);
+
+                    if (item.shortcut) {
+                        /** @const {!HTMLSpanElement} */
+                        const submenu_item_shorcut = /** @type {!HTMLSpanElement} */(document.createElement("span"));
+
+                        submenu_item_shorcut.textContent = item.shortcut.toString();
+
+                        submenu_item.appendChild(submenu_item_shorcut)
+                    }
+                    submenu_item.addEventListener("click", /** @type {function(Event):*} */(item.func));
                 }
 
                 submenu_el.appendChild(submenu_item);
@@ -157,7 +186,6 @@ export default class NavElem extends HTMLElement {
             
             li.addEventListener("click", /** @type {function(Event):*} */(onMenubarItemClick.bind(li, submenu_el)));
 
-
             this._submenus.append(submenu_el);
         }
 
@@ -166,38 +194,3 @@ export default class NavElem extends HTMLElement {
 }
 
 customElements.define("nav-elem", NavElem);
-
-/**
- * Basically initializes the navigation elements
- * 
- * @param {!NavElem} navElem The element to inject nav elements into
- * @returns {Promise<void>}
- */
-export async function initNav(navElem) {
-    // /** @type {!HTMLUListElement} */
-    // let navList = /** @type {!HTMLUListElement}*/ document.createElement("ul");
-    // /** @type {!HTMLDivElement} */
-    // let navMenu = /** @type {HTMLDivElement} */document.createElement("div");
-
-    // for (const submenu of submenus) {
-    //     let li = document.createElement("li");
-    //     li.innerText = submenu.name;
-    //     const li_menu = document.createElement("div");
-
-    //     li_menu.classList.add("submenu");
-
-    //     for(let {name, item} of submenu.items) {
-    //         if (typeof item === "function") {
-    //             li_menu.appendChild(/** @type {Node} */(Object.assign(document.createElement("span"), {textContent: name, onclick: item})));
-    //         } else {}
-    //     }
-
-    //     navMenu.appendChild(li_menu);
-    //     navList.appendChild(li);
-    //     console.log(submenu.name);
-    // }
-
-    // navList.style.display = "flex";
-    // navElem.appendChild(navList);
-    // navElem.appendChild(navMenu);
-}

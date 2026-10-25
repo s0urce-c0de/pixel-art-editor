@@ -121,12 +121,12 @@ requestAnimationFrame(function tick() {
         // }
         mouse.currentButtons = mouseEvent.buttons;
         mouse.pos = mouseEvent.pos;
-        if(mouseEvent.buttons & 1) drawLayer.draw(new Rectangle(mouse.pos, 1, 1, "rgb(240, 9, 9)"));
+        if(mouseEvent.buttons & 1) drawLayer.draw(new Rectangle(mouse.pos, 1, 1, "#F00909"));
     }
 
     mouse.eventlog = [];
 
-    if(mouse.show) cursorLayer.draw(new Rectangle(mouse.pos, 1, 1, "rgba(128, 128, 128, 0.5)"));
+    if(mouse.show) cursorLayer.draw(new Rectangle(mouse.pos, 1, 1, "#80808080"));
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
