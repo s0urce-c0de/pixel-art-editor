@@ -37,7 +37,41 @@ NavStyleSheet.replaceSync(`:host {
             }
         }
     }
+
+    & > div {
+        & > ul.submenu {
+            position: absolute;
+            margin: 0;
+            border-radius: 0.5em;
+            border: 0;
+            padding: 0.5em 0;
+            /* CSS Fun fact: you need space around the plus for it to work */
+            left: calc(anchor(left) + 0.5em);
+            top: calc(anchor(bottom) + 0.25em);
+            background-color: #B0B0B080;
+
+            & > * {
+                padding: 0 0.5em;
+                &:hover {
+                    background-color: #B0B0B0F0;
+                }
+            }
+        }
+    }
 }`)
+
+/* Detect popover with .matches(":popover-active") i think */
+/**
+ * Update a menubar item on popover.
+ * 
+ * @this {!HTMLElement} The menubar item
+ * @param {!HTMLElement} popover The actual item that is popovered
+ * @param {!MouseEvent} e 
+ * @returns {void}
+ */
+function onMenubarItemClick(popover, e) {
+    popover.togglePopover();
+}
 
 /**
  * HTML NavElem
@@ -57,12 +91,19 @@ export default class NavElem extends HTMLElement {
      */
     _menulist;
 
+    /**
+     * @private
+     * @type {!HTMLDivElement}
+     */
+    _submenus;
+
     constructor() {
         super();
         this._root = this.attachShadow({ mode: "closed" });
         this._root.adoptedStyleSheets = [NavStyleSheet];
 
         this._menulist = /** @type {!HTMLUListElement} */(document.createElement("ul"));
+        this._submenus = /** @type {!HTMLDivElement} */(document.createElement("div"));
 
         /** @type {!HTMLImageElement} */
         const logo = config.logo;
@@ -71,6 +112,7 @@ export default class NavElem extends HTMLElement {
         this._menulist.appendChild(logo);
 
         this._root.appendChild(this._menulist);
+        this._root.append(this._submenus);
     }
 
     /**
@@ -81,17 +123,42 @@ export default class NavElem extends HTMLElement {
      */
     init(submenus) {
         for (let i = 0; i < submenus.length; i++) {
-            /** @const {Submenu} */
+            /** @const {!Submenu} */
             const submenu = submenus[i];
-            /** @type {HTMLLIElement} */
-            let li = /** @type {HTMLLIElement} */(document.createElement("li"));
+            /** @type {!HTMLLIElement} */
+            let li = /** @type {!HTMLLIElement} */(document.createElement("li"));
             li.innerText = submenu.name;
             /* Shouldn't repeat since I think it stops are shadow-dom boundary */
-            li.style.anchorName = `submenus-${i}`;
-
-            
+            li.id = `submenus-${i}`
+            li.style.anchorName = `--${li.id}`;
 
             this._menulist.appendChild(li);
+
+            /** @type {!HTMLUListElement} */
+            const submenu_el = /** @type {!HTMLUListElement} */(document.createElement("ul"));
+
+            for (const {name, item} of submenu.items) {
+                /** @const {!HTMLLIElement} */
+                const submenu_item = /** @const {!HTMLLIElement} */(document.createElement("li"));
+                submenu_item.innerText = name;
+                if (item instanceof Function) {
+                    /* TODO: Add code to dismis after the item is clicked. */
+                    submenu_item.addEventListener("click", item);
+                } else {
+                    throw new Error("Should be a string! No nested support yet!");
+                }
+
+                submenu_el.appendChild(submenu_item);
+            }
+
+            submenu_el.popover = "manual";
+            submenu_el.style.positionAnchor = li.style.anchorName;
+            submenu_el.classList.add("submenu");
+            
+            li.addEventListener("click", /** @type {function(Event):*} */(onMenubarItemClick.bind(li, submenu_el)));
+
+
+            this._submenus.append(submenu_el);
         }
 
         this._menulist.style.display = "flex";
