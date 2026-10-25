@@ -1,5 +1,5 @@
 import config from "./config.js";
-import Submenu, { SubmenuFunctionItem, SubmenuItem, SubmenuItemItem, SubmenuItems } from "./submenu.js";
+import Submenu from "./submenu.js";
 import { Modifiers, Shortcut } from "./types.js";
 import { device } from "./utils.js";
 
@@ -8,7 +8,20 @@ import { device } from "./utils.js";
  */
 const NavStyleSheet = new CSSStyleSheet();
 
-NavStyleSheet.replaceSync(`:host {
+/**
+ * @param {!ITemplateArray} strings
+ * @param {...*} values
+ * @return {string}
+ */
+const css = (strings, ...values) => strings.reduce(/**
+     * @param {string} acc
+     * @param {string} str
+     * @param {number} i
+     * @return {string}
+     */(acc, str, i) => acc + str + (values[i] || ''), '');
+
+
+NavStyleSheet.replaceSync(css`:host {
     grid-row: 1;
     width: 100%;
     background-color: #FFFFFF60;
@@ -68,7 +81,7 @@ NavStyleSheet.replaceSync(`:host {
             }
         }
     }
-}`)
+}`);
 
 /* Detect popover with .matches(":popover-active") i think */
 /**
@@ -146,7 +159,7 @@ export default class NavElem extends HTMLElement {
             let li = /** @type {!HTMLLIElement} */(document.createElement("li"));
             li.textContent = submenu.name;
             /* Shouldn't repeat since I think it stops are shadow-dom boundary */
-            li.id = `submenus-${i}`
+            li.id = `submenus-${i}`;
             li.style.anchorName = `--${li.id}`;
 
             this._menulist.appendChild(li);

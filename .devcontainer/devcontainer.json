@@ -1,4 +1,0 @@
-{
-    "name": "hackatime set up",
-    "onCreateCommand": "curl -fsSL https://hack.club/terminal-wakatime.sh | bash"
-}

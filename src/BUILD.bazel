@@ -1,0 +1,42 @@
+load("@rules_closure//closure:defs.bzl", "closure_js_library", "closure_js_binary")
+
+closure_js_library(
+    name = "externs",
+    srcs = ["externs.js"],
+    no_closure_library = True,
+)
+
+closure_js_library(
+    name = "pixel-art-editor",
+    srcs = glob(
+        ["**/*.js"],
+        exclude = [
+            "externs.js",
+        ]
+    ),
+    data = [],
+    deps = [],
+    exports = [],
+    suppress = [],
+    convention = "GOOGLE",
+    no_closure_library = True
+)
+
+closure_js_binary(
+    name = "out",
+    compilation_level = "ADVANCED_OPTIMIZATIONS",
+    dependency_mode = "PRUNE",
+    entry_points = ["src/main.js"],
+    deps = [":pixel-art-editor", ":externs"],
+    defs = [
+        "--warning_level=VERBOSE",
+        "--env=BROWSER",
+        "--language_in=ECMASCRIPT_NEXT",
+        "--language_out=ECMASCRIPT_2020",
+        "--jscomp_error=checkTypes",
+        "--jscomp_error=strictCheckTypes",
+        "--jscomp_warning=reportUnknownTypes",
+        "--jscomp_warning=missingProperties",
+        "--jscomp_warning=accessControls",
+    ],
+)

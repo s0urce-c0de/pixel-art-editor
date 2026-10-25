@@ -11,7 +11,7 @@ export default class Shape {
      * Don't use this!
      */
     constructor() {
-        if (new.target == Shape) throw new Error("Don't make this directly! Make a subclass!")
+        if (new.target == Shape) throw new Error("Don't make this directly! Make a subclass!");
     }
 
     /**

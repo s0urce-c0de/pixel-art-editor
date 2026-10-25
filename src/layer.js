@@ -57,7 +57,7 @@ export default class Layer {
     /**
      * Draw this upon another canvas
      * 
-     * @param {RenderingContext2D} ctx 
+     * @param {RenderingContext2D=} ctx 
      * @returns {void}
      */
     drawOn(ctx = this._ref_ctx) {

@@ -1,0 +1,61 @@
+:host {
+    grid-row: 1;
+    width: 100%;
+    background-color: #FFFFFF60;
+    & > ul {
+        /* Changed to display flex later */
+        display: none;
+        gap: 0.5em;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+
+        & > img, & > li {
+            --padding-vertical: 0.25em;
+            --padding-horizontal: 0.75em;
+            padding: var(--padding-vertical) var(--padding-horizontal);
+            border-radius: 0.5em;
+        }
+
+        & > li {
+            cursor: pointer;
+
+            &:hover {
+                background-color: #00000020;
+            }
+
+            &:active, &.active {
+                background-color: #00000030;
+            }
+        }
+    }
+
+    & > div {
+        & > ul.submenu {
+            position: absolute;
+            margin: 0;
+            border-radius: 0.5em;
+            border: 0;
+            padding: 0.5em 0;
+            /* CSS Fun fact: you need space around the plus for it to work */
+            left: calc(anchor(left) + 0.5em);
+            top: calc(anchor(bottom) + 0.25em);
+            background-color: #FFFFFF60;
+            min-width: 10%;
+
+            & > li {
+                padding: 0 0.5em;
+                display: flex;
+                justify-content: space-between;
+                cursor: pointer;
+                &:hover {
+                    background-color: #00000020;
+                }
+
+                span:nth-child(2) {
+                    color: darkgrey;
+                }
+            }
+        }
+    }
+}

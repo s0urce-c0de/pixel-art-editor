@@ -1,4 +1,8 @@
 # black hole
 node_modules/**
 dist/**
-!dist/index.html
+
+bazel-testlogs/**
+bazel-pixel-art-editor/**
+bazel-out/**
+bazel-bin/**

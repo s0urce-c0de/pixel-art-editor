@@ -10,13 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/s0urce-c0de/pixel-art-editor.git"
   },
-  "license": "CC0-1.0",
+  "license": "MPL-2.0-no-copyleft-exception",
   "author": "s0urce-c0de",
   "type": "module",
   "scripts": {
-    "build": "google-closure-compiler --flagfile=closure-flags.txt && cp static/* dist"
+    "clean": "bazel clean",
+    "build": "bazel build //src:out --verbose_failures && cp static/* dist"
   },
-  "devDependencies": {
+  "dependencies": {
+    "@bazel/bazelisk": "^1.28.1",
     "google-closure-compiler": "^20261011.0.0"
   }
 }

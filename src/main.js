@@ -26,7 +26,7 @@ const mouse = {
     // see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons#value
     currentButtons: 0b000,
     eventlog: []
-}
+};
 
 /** @type {!Array<!Layer>} */
 const layers = [];

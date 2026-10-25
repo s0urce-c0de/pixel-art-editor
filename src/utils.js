@@ -67,7 +67,7 @@ export class Point {
  * @returns {void}
  */
 export function packLayers(layers, ctx, noclear = false) {
-    if (!noclear) ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    if (!noclear) ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     for (let layer of layers) {
         layer.drawOn(ctx);
