@@ -1,3 +1,7 @@
+# This Source Code Form is "Incompatible With Secondary Licenses", as defined by the Mozilla Public License, v. 2.0.
+
+This applies to all files unless a header is specifically included. This means that these files may NOT be relicensed.
+
 # Pixel art editor
 
 This is a simple pixel art editor. I built it using closure compiler (made by google, but it is the best at its job) and HTML/JS/CSS. I documented the code using @fileoverview, etc. because typescript sucks and JSDoc doesnt need my to recompile my code every single time I want to test it.
