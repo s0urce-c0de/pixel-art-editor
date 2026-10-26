@@ -15,7 +15,7 @@
   "type": "module",
   "scripts": {
     "clean": "bazel clean",
-    "build": "bazel build //src:out --verbose_failures"
+    "build": "bazel build //src:dist --verbose_failures"
   },
   "dependencies": {
     "@bazel/bazelisk": "^1.28.1",

@@ -46,17 +46,20 @@ genrule(
     name = "dist",
     srcs = [
         "static/index.html",
+        "static/logo.svg",
         ":out",
         ":out.js.map"
     ],
     outs = [
         "dist/index.html",
+        "dist/logo.svg",
         "dist/main.js",
         "dist/main.js.map"
     ],
     cmd = """
-        mkdir -p $(RULEDIR)/dist
+        mkdir -p $(@D)/dist
         cp $(location static/index.html) $(RULEDIR)/dist/index.html
+        cp $(location static/logo.svg) $(RULEDIR)/dist/logo.svg
         
         for file in $(locations :out); do
             if [[ "$$file" == *.map ]]; then
