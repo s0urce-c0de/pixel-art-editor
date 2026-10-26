@@ -49,14 +49,14 @@ jobs:
       - name: Run the bazel build
         run: npm run build
       - name: List directories
-        run: ls && ls bazel*
+        run: ls && ls bazel-bin/src/
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: './bazel-bin/src/dist'
+          path: bazel-bin/src/dist
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
