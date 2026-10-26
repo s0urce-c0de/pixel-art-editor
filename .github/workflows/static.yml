@@ -48,6 +48,8 @@ jobs:
         run: npm ci
       - name: Run the bazel build
         run: npm run build
+      - name: List directories
+        run: ls && ls bazel*
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
