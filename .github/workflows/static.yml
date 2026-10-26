@@ -46,7 +46,7 @@ jobs:
           cache: "npm"
       - name: Install Deps
         run: npm ci
-      - name: Run Closure
+      - name: Run the bazel build
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
